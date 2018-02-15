@@ -1,0 +1,67 @@
+﻿{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "virtualMachineName": {
+      "type": "string"
+    },
+    "DiskNumber": {
+      "type": "int"
+    },
+    "DriveLetter": {
+      "type": "string"
+    },
+    "sasToken": {
+      "type": "securestring",
+      "metadata": {
+        "description": "The  SasToken"
+      }
+    }
+  },
+  "variables": {
+    "baseURL": "[split(deployment().properties.templateLink.uri,'Templates')[0]]"
+  },
+  "resources": [
+    {
+      "apiVersion": "2015-06-15",
+      "dependsOn": [
+      ],
+      "location": "[resourceGroup().location]",
+      "name": "[parameters('virtualMachineName')]",
+      "resources": [
+        {
+          "type": "extensions",
+          "name": "CreateDrive",
+          "apiVersion": "2015-06-15",
+          "location": "[resourceGroup().location]",
+          "dependsOn": [
+            "[resourceId('Microsoft.Compute/virtualMachines', parameters('virtualMachineName'))]"
+          
+          ],
+          "properties": {
+            "publisher": "Microsoft.Powershell",
+            "type": "DSC",
+            "typeHandlerVersion": "2.19",
+            "autoUpgradeMinorVersion": true,
+            "settings": {
+              "ModulesUrl": "[concat(variables('baseURL'), 'DSC/CreateDisk.zip', parameters('sasToken'))]",
+              "ConfigurationFunction": "CreateDisk.ps1\\DataDisk",
+              "Properties": {
+                "DiskNumber": "[parameters('DiskNumber')]",
+                "DriveLetter": "[parameters('DriveLetter')]"
+              },
+              "protectedSettings": {
+                "Items": {
+                  "AdminPassword": "[parameters('sasToken')]"
+                }
+              }
+            }
+            }
+          }
+      ],
+      "type": "Microsoft.Compute/virtualMachines"
+    }
+  ],
+  "outputs": {
+  }
+}

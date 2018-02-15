@@ -1,0 +1,53 @@
+﻿{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "virtualMachineName": {
+      "value": "testbenADVM"
+    },
+    "virtualMachineSize": {
+      "value": "Standard_D1_v2"
+    },
+    "storageAccountName": {
+      "value": "benteststorage245"
+    },
+    "virtualNetworkName": {
+      "value": "bentestVNet"
+    },
+    "adminPassword": {
+      "reference": {
+        "keyVault": {
+          "id": "/subscriptions/de0861c6-c7f4-4923-be2c-58877f793234/resourceGroups/ccsautomationvault/providers/Microsoft.KeyVault/vaults/ccsautomationvault"
+        },
+        "secretName": "vmpassword"
+      }
+    },
+    "diagnosticsStorageAccountName": {
+      "value": "benteststorageDiag245"
+    },
+    "subnetName": {
+      "value": "ADSubnet"
+    },
+    "privateIpAddress": {
+      "value": "10.100.0.4"
+    },
+    "dnsNameForPublicIP": {
+      "value": "testbenadvm783"
+    },
+    "publicIPAddressType": {
+      "value": "Dynamic"
+    },
+    "privateIPAddressType": {
+      "value": "Static"
+    },
+    "OSPublisher": {
+      "value": "MicrosoftWindowsServer"
+    },
+    "OSOffer": {
+      "value": "WindowsServer"
+    },
+    "OSSKU": {
+      "value": "2012-R2-Datacenter"
+    }
+  }
+}

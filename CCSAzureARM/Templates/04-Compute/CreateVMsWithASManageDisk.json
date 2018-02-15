@@ -1,0 +1,168 @@
+﻿{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "VMsConfig": {
+      "type": "array"
+    },
+    "virtualNetworkName": {
+      "type": "string"
+    },
+    "adminPassword": {
+      "type": "securestring"
+    },
+    "sasToken": {
+      "type": "securestring",
+      "metadata": {
+        "description": "The  SasToken"
+      }
+    }
+  },
+  "variables": {
+    "vnetId": "[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworkName'))]",
+    "nicSuffix": "-nic",
+    "vhdStorageContainerName": "vhds",
+    "adminUsername": "ctsadmin",
+    "baseURL": "[split(deployment().properties.templateLink.uri,'Templates')[0]]",
+    "createNicwithPrivateIPURI": "[concat(variables('baseURL'), 'Templates/03-Network/CreateNicPrivate.json', parameters('sasToken'))]",
+    "createNicwithPublicIPURI": "[concat(variables('baseURL'), 'Templates/03-Network/CreateNicPublic.json', parameters('sasToken'))]",
+    "createPublicIPURI": "[concat(variables('baseURL'), 'Templates/03-Network/CreatePublicIP.json', parameters('sasToken'))]"
+  },
+  "resources": [
+    {
+      "name": "[concat(parameters('VMsConfig')[copyindex()].virtualMachineName, variables('nicSuffix'),0)]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2016-09-01",
+      "condition": "[equals(parameters('VMsConfig')[copyindex()].isPublic, 0)]",
+      "copy": {
+        "name": "privateNicLoop",
+        "count": "[length(parameters('VMsConfig'))]"
+      },
+      "dependsOn": [
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('createNicwithPrivateIPURI')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "virtualMachineName": { "value": "[parameters('VMsConfig')[copyindex()].virtualMachineName]" },
+          "virtualNetworkName": { "value": "[parameters('virtualNetworkName')]" },
+          "subnetName": { "value": "[parameters('VMsConfig')[copyindex()].subnetName]" },
+          "privateIPAddressType": { "value": "[parameters('VMsConfig')[copyindex()].privateIPAddressType]" },
+          "privateIpAddress": { "value": "[parameters('VMsConfig')[copyindex()].privateIpAddress]" },
+          "networkInterfaceName": { "value": "[concat(parameters('VMsConfig')[copyindex()].virtualMachineName, variables('nicSuffix'),0)]" }
+        }
+      }
+    },
+    {
+      "name": "[concat(parameters('VMsConfig')[copyindex()].virtualMachineName, variables('nicSuffix'),1)]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2016-09-01",
+      "condition": "[equals(parameters('VMsConfig')[copyindex()].isPublic, 1)]",
+      "copy": {
+        "name": "publicNicLoop",
+        "count": "[length(parameters('VMsConfig'))]"
+      },
+      "dependsOn": [
+        "publicIPNicLoop"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('createNicwithPublicIPURI')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "virtualMachineName": { "value": "[parameters('VMsConfig')[copyindex()].virtualMachineName]" },
+          "virtualNetworkName": { "value": "[parameters('virtualNetworkName')]" },
+          "subnetName": { "value": "[parameters('VMsConfig')[copyindex()].subnetName]" },
+          "privateIPAddressType": { "value": "[parameters('VMsConfig')[copyindex()].privateIPAddressType]" },
+          "privateIpAddress": { "value": "[parameters('VMsConfig')[copyindex()].privateIpAddress]" },
+          "networkInterfaceName": { "value": "[concat(parameters('VMsConfig')[copyindex()].virtualMachineName, variables('nicSuffix'),1)]" },
+          "publicIPAddressName": { "value": "[concat(parameters('VMsConfig')[copyindex()].virtualMachineName, '-pip')]" }
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2016-09-01",
+      "name": "[concat(parameters('VMsConfig')[copyindex()].virtualMachineName, '-pip')]",
+      "condition": "[greater(length(parameters('VMsConfig')[copyindex()].publicIPAddressType), 0)]",
+      "copy": {
+        "name": "publicIPNicLoop",
+        "count": "[length(parameters('VMsConfig'))]"
+      },
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('createPublicIPURI')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "publicIPName": { "value": "[concat(parameters('VMsConfig')[copyindex()].virtualMachineName, '-pip')]" },
+          "publicIPAddressType": { "value": "[parameters('VMsConfig')[copyindex()].publicIPAddressType]" },
+          "dnsNameForPublicIP": { "value": "[parameters('VMsConfig')[copyindex()].dnsNameForPublicIP]" }
+        }
+      }
+    },
+    {
+      "name": "[parameters('VMsConfig')[copyindex()].virtualMachineName]",
+      "type": "Microsoft.Compute/virtualMachines",
+      "apiVersion": "2016-04-30-preview",
+      "location": "[resourceGroup().location]",
+      "copy": {
+        "name": "VMLoop",
+        "count": "[length(parameters('VMsConfig'))]"
+      },
+      "dependsOn": [
+        "privateNicLoop",
+        "publicNicLoop"
+      ],
+      "properties": {
+        "osProfile": {
+          "computerName": "[parameters('VMsConfig')[copyindex()].virtualMachineName]",
+          "adminUsername": "[variables('adminUsername')]",
+          "adminPassword": "[parameters('adminPassword')]",
+          "windowsConfiguration": {
+            "provisionVmAgent": "true"
+          }
+        },
+        "availabilitySet": {
+          "id": "[resourceId('Microsoft.Compute/availabilitySets',parameters('VMsConfig')[copyindex()].availabilitySetName)]"
+        },
+        "hardwareProfile": {
+          "vmSize": "[parameters('VMsConfig')[copyindex()].virtualMachineSize]"
+        },
+        "storageProfile": {
+          "imageReference": {
+            "publisher": "[parameters('VMsConfig')[copyindex()].OSPublisher]",
+            "offer": "[parameters('VMsConfig')[copyindex()].OSOffer]",
+            "sku": "[parameters('VMsConfig')[copyindex()].OSSKU]",
+            "version": "latest"
+          },
+          "osDisk": {
+            "name": "[parameters('VMsConfig')[copyindex()].virtualMachineName]",
+            "createOption": "fromImage"
+          }
+        },
+        "networkProfile": {
+          "networkInterfaces": [
+            {
+              "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(parameters('VMsConfig')[copyindex()].virtualMachineName, variables('nicSuffix'),parameters('VMsConfig')[copyindex()].isPublic))]"
+            }
+          ]
+        },
+        "diagnosticsProfile": {
+          "bootDiagnostics": {
+            "enabled": true,
+            "storageUri": "[concat('http://', parameters('VMsConfig')[copyindex()].diagnosticsStorageAccountName, '.blob.core.windows.net')]"
+          }
+        }
+      }
+    }
+  ],
+  "outputs":  {
+  }
+}

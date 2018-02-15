@@ -1,0 +1,30 @@
+﻿{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "ASConfig": {
+      "type": "array"
+    }
+  },
+  "variables": {
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Compute/availabilitySets",
+      "name": "[parameters('ASConfig')[copyindex()].availabilitySetName]",
+      "apiVersion": "2016-04-30-preview",
+      "location": "[resourceGroup().location]",
+      "copy": {
+        "name": "ASLoop",
+        "count": "[length(parameters('ASConfig'))]"
+      },
+      "properties": {
+        "PlatformUpdateDomainCount": "[parameters('ASConfig')[copyindex()].UDomainCount]",
+        "PlatformFaultDomainCount": "[parameters('ASConfig')[copyindex()].FDomainCount]",
+        "managed": "[parameters('ASConfig')[copyindex()].isManaged]"
+      }
+    }
+  ],
+  "outputs":  {
+  }
+}

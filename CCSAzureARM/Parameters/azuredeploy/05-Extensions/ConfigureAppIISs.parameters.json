@@ -1,0 +1,17 @@
+﻿{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "virtualMachineNames": {
+      "value": [ "testbenAppVM1", "testbenAppVM2" ]
+    },
+    "sasToken": {
+      "reference": {
+        "keyVault": {
+          "id": "/subscriptions/de0861c6-c7f4-4923-be2c-58877f793234/resourceGroups/ccsautomationvault/providers/Microsoft.KeyVault/vaults/ccsautomationvault"
+        },
+        "secretName": "saaskey"
+      }
+    }
+  }
+}

@@ -1,0 +1,28 @@
+﻿{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "ASConfig": {
+      "value": [
+        {
+          "availabilitySetName": "testbenAppAS",
+          "UDomainCount": 5,
+          "FDomainCount": 2,
+          "isManaged": true
+        },
+        {
+          "availabilitySetName": "testbenDBAS",
+          "UDomainCount": 5,
+          "FDomainCount": 2,
+          "isManaged": true
+        },
+        {
+          "availabilitySetName": "testbenjumpAS",
+          "UDomainCount": 5,
+          "FDomainCount": 2,
+          "isManaged": true
+        }
+      ]
+    }
+  }
+}

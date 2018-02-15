@@ -1,0 +1,66 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "templateFolder": {
+      "value": "Templates"
+    },
+    "paramFolder": {
+      "value": "Parameters\\azuredeploy"
+    },
+    "storageTemplateFile": {
+      "value": "02-Storage\\CreateStorage.json"
+    },
+    "adVMStorageTemplateParametersFile": {
+      "value": "02-Storage\\CreateADVMStorage.parameters.json"
+    },
+    "adVMDiagStorageTemplateParametersFile": {
+      "value": "02-Storage\\CreateADVMDiagStorage.parameters.json"
+    },
+    "networkTemplateFile": {
+      "value": "03-Network\\CreateNetwork.json"
+    },
+    "networkTemplateParametersFile": {
+      "value": "03-Network\\CreateNetworkandSubnet.parameters.json"
+    },
+    "simpleVMTemplateFile": {
+      "value": "04-Compute\\CreateVM-PIP.json"
+    },
+    "ADVMCreationTemplateParametersFile": {
+      "value": "04-Compute\\CreateADVM.parameters.json"
+    },
+    "unManagedDiskTemplateFile": {
+      "value": "04-Compute\\CreateUnManageDisks.json"
+    },
+    "ADVMDiskCreationTemplateParametersFile": {
+      "value": "04-Compute\\CreateADUnManageDisks.parameters.json"
+    },
+    "ADVMAntiMalwareTemplateFile": {
+      "value": "05-Extensions\\InstallAntiMalware.json"
+    },
+    "AppDBVMsASTemplateFile": {
+      "value": "03-Network\\CreateAvailabilitySets.json"
+    },
+    "AppDBVMsASTemplateParametersFile": {
+      "value": "04-Compute\\CreateAppDBAS.parameters.json"
+    },
+    "AppDBVMsTemplateFile": {
+      "value": "04-Compute\\CreateVMsWithASManageDisk.json"
+    },
+    "AppDBVMsTemplateParametersFile": {
+      "value": "04-Compute\\CreateAppDBVMsWithASManaged.parameters.json"
+    },
+    "AppVMIISTemplateFile": {
+      "value": "05-Extensions\\Install-IISs.json"
+    },
+    "AppVMIISTemplateParametersFile": {
+      "value": "05-Extensions\\ConfigureAppIISs.parameters.json"
+    },
+    "AppLBTemplateFile": {
+      "value": "03-Network\\CreatePublicLB.json"
+    },
+    "AppLBTemplateParametersFile": {
+      "value": "03-Network\\CreateAppPublicLB.parameters.json"
+    }
+  }
+}

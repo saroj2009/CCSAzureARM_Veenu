@@ -1,0 +1,99 @@
+﻿{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "virtualNetworkName": {
+      "value": "bentestVNet"
+    },
+    "adminPassword": {
+      "reference": {
+        "keyVault": {
+          "id": "/subscriptions/de0861c6-c7f4-4923-be2c-58877f793234/resourceGroups/ccsautomationvault/providers/Microsoft.KeyVault/vaults/ccsautomationvault"
+        },
+        "secretName": "vmpassword"
+      }
+    },
+    "sasToken": {
+      "value": "?sv=2014-02-14&sr=c&sig=GOfsCaJS6nFKr0lG1CM2g%2B384G5I7pOINUUfrM7J%2F4c%3D&st=2017-08-01T18%3A30%3A00Z&se=2017-08-30T18%3A30%3A00Z&sp=r"
+    },
+    "VMsConfig": {
+      "value": [
+        {
+          "virtualMachineName": "testbenAppVM1",
+          "virtualMachineSize": "Standard_D1_v2",
+          "storageAccountName": "benteststorage245",
+          "diagnosticsStorageAccountName": "benteststorageDiag245",
+          "subnetName": "AppSubnet",
+          "privateIPAddressType": "Static",
+          "privateIpAddress": "10.100.0.40",
+          "publicIPAddressType": "",
+          "dnsNameForPublicIP": "",
+          "OSPublisher": "MicrosoftWindowsServer",
+          "OSOffer": "WindowsServer",
+          "OSSKU": "2012-R2-Datacenter",
+          "isPublic": 0
+        },
+        {
+          "virtualMachineName": "testbenAppVM2",
+          "virtualMachineSize": "Standard_D1_v2",
+          "storageAccountName": "benteststorage245",
+          "diagnosticsStorageAccountName": "benteststorageDiag245",
+          "subnetName": "AppSubnet",
+          "privateIPAddressType": "Static",
+          "privateIpAddress": "10.100.0.41",
+          "publicIPAddressType": "",
+          "dnsNameForPublicIP": "",
+          "OSPublisher": "MicrosoftWindowsServer",
+          "OSOffer": "WindowsServer",
+          "OSSKU": "2012-R2-Datacenter",
+          "isPublic": 0
+        },
+        {
+          "virtualMachineName": "testbenDBVM1",
+          "virtualMachineSize": "Standard_D1_v2",
+          "storageAccountName": "benteststorage245",
+          "diagnosticsStorageAccountName": "benteststorageDiag245",
+          "subnetName": "DBSubnet",
+          "privateIPAddressType": "Static",
+          "privateIpAddress": "10.100.0.54",
+          "publicIPAddressType": "",
+          "dnsNameForPublicIP": "",
+          "OSPublisher": "MicrosoftWindowsServer",
+          "OSOffer": "WindowsServer",
+          "OSSKU": "2012-R2-Datacenter",
+          "isPublic": 0
+        },
+        {
+          "virtualMachineName": "testbenjump87",
+          "virtualMachineSize": "Standard_D1_v2",
+          "storageAccountName": "benteststorage245",
+          "diagnosticsStorageAccountName": "benteststorageDiag245",
+          "subnetName": "DMZSubnet",
+          "privateIPAddressType": "Static",
+          "privateIpAddress": "10.100.0.21",
+          "publicIPAddressType": "Dynamic",
+          "dnsNameForPublicIP": "testbenjump87",
+          "OSPublisher": "MicrosoftWindowsServer",
+          "OSOffer": "WindowsServer",
+          "OSSKU": "2012-R2-Datacenter",
+          "isPublic": 1
+        },
+        {
+          "virtualMachineName": "testbenjump88",
+          "virtualMachineSize": "Standard_D1_v2",
+          "storageAccountName": "benteststorage245",
+          "diagnosticsStorageAccountName": "benteststorageDiag245",
+          "subnetName": "DMZSubnet",
+          "privateIPAddressType": "Static",
+          "privateIpAddress": "10.100.0.22",
+          "publicIPAddressType": "Dynamic",
+          "dnsNameForPublicIP": "testbenjump88",
+          "OSPublisher": "MicrosoftWindowsServer",
+          "OSOffer": "WindowsServer",
+          "OSSKU": "2012-R2-Datacenter",
+          "isPublic": 1
+        }
+      ]
+    }
+  }
+}

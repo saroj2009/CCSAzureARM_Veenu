@@ -1,0 +1,51 @@
+﻿{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "virtualMachineNames": {
+      "type": "array"
+    },
+    "sasToken": {
+      "type": "securestring",
+      "metadata": {
+        "description": "The  SasToken"
+      }
+    }
+  },
+  "variables": {
+    "baseURL": "[split(deployment().properties.templateLink.uri,'Templates')[0]]",
+    "vmExtensionName": "DSCIISExtension",
+    "modulesUrl": "DSC/Install-IIS.zip",
+    "configurationFunction": "Install-IIS.ps1\\InstallWebsite"
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Compute/virtualMachines/extensions",
+      "name": "[concat(parameters('virtualMachineNames')[copyindex()],'/', variables('vmExtensionName'))]",
+      "apiVersion": "2015-05-01-preview",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+      ],
+      "copy": {
+        "name": "IIsLoop",
+        "count": "[length(parameters('virtualMachineNames'))]"
+      },
+      "properties": {
+        "publisher": "Microsoft.Powershell",
+        "type": "DSC",
+        "typeHandlerVersion": "2.19",
+        "autoUpgradeMinorVersion": true,
+        "settings": {
+          "ModulesUrl": "[ concat(variables('baseURL'), variables('modulesUrl'), parameters('sasToken')) ]",
+          "ConfigurationFunction": "[variables('configurationFunction')]",
+          "Properties": {
+            "MachineName": "[parameters('virtualMachineNames')[copyindex()]]"
+          }
+        },
+        "protectedSettings": null
+      }
+    }
+  ],
+  "outputs": {
+  }
+}

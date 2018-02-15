@@ -1,0 +1,270 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "_artifactsLocation": {
+      "type": "string"
+    },
+    "_artifactsLocationSasToken": {
+      "type": "securestring"
+    },
+    "templateFolder": {
+      "type": "string"
+    },
+    "paramFolder": {
+      "type": "string"
+    },
+    "storageTemplateFile": {
+      "type": "string"
+    },
+    "adVMStorageTemplateParametersFile": {
+      "type": "string"
+    },
+    "adVMDiagStorageTemplateParametersFile": {
+      "type": "string"
+    },
+    "networkTemplateFile": {
+      "type": "string"
+    },
+    "networkTemplateParametersFile": {
+      "type": "string"
+    },
+    "simpleVMTemplateFile": {
+      "type": "string"
+    },
+    "ADVMCreationTemplateParametersFile": {
+      "type": "string"
+    },
+    "unManagedDiskTemplateFile": {
+      "type": "string"
+    },
+    "ADVMDiskCreationTemplateParametersFile": {
+      "type": "string"
+    },
+    "AppVMIISTemplateFile": {
+      "type": "string"
+    },
+    "AppVMIISTemplateParametersFile": {
+      "type": "string"
+    },
+    "ADVMAntiMalwareTemplateFile": {
+      "type": "string"
+    },
+    "AppDBVMsASTemplateFile": {
+      "type": "string"
+    },
+    "AppDBVMsASTemplateParametersFile": {
+      "type": "string"
+    },
+    "AppDBVMsTemplateFile": {
+      "type": "string"
+    },
+    "AppDBVMsTemplateParametersFile": {
+      "type": "string"
+    },
+    "AppLBTemplateFile": {
+      "type": "string"
+    },
+    "AppLBTemplateParametersFile": {
+      "type": "string"
+    }
+  },
+  "variables": {
+  },
+  "resources": [
+    {
+      "name": "ADVMStorage",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2016-09-01",
+      "dependsOn": [],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[concat(parameters('_artifactsLocation'), '/', parameters('templateFolder'), '/', parameters('storageTemplateFile'), parameters('_artifactsLocationSasToken'))]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parametersLink": {
+          "uri": "[concat(parameters('_artifactsLocation'), '/', parameters('paramFolder'), '/', parameters('adVMStorageTemplateParametersFile'), parameters('_artifactsLocationSasToken'))]",
+          "contentVersion": "1.0.0.0"
+        }
+      }
+    },
+    {
+      "name": "ADVMDiagStorage",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2016-09-01",
+      "dependsOn": [],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[concat(parameters('_artifactsLocation'), '/', parameters('templateFolder'), '/', parameters('storageTemplateFile'), parameters('_artifactsLocationSasToken'))]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parametersLink": {
+          "uri": "[concat(parameters('_artifactsLocation'), '/', parameters('paramFolder'), '/', parameters('adVMDiagStorageTemplateParametersFile'), parameters('_artifactsLocationSasToken'))]",
+          "contentVersion": "1.0.0.0"
+        }
+      }
+    },
+    {
+      "name": "NetworkCreation",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2016-09-01",
+      "dependsOn": [],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[concat(parameters('_artifactsLocation'), '/', parameters('templateFolder'), '/', parameters('networkTemplateFile'), parameters('_artifactsLocationSasToken'))]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parametersLink": {
+          "uri": "[concat(parameters('_artifactsLocation'), '/', parameters('paramFolder'), '/', parameters('networkTemplateParametersFile'), parameters('_artifactsLocationSasToken'))]",
+          "contentVersion": "1.0.0.0"
+        }
+      }
+    },
+    {
+      "name": "ADVMCreation",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2016-09-01",
+      "dependsOn": [
+        "[concat('Microsoft.Resources/deployments/', 'ADVMStorage')]",
+        "[concat('Microsoft.Resources/deployments/', 'ADVMDiagStorage')]",
+        "[concat('Microsoft.Resources/deployments/', 'NetworkCreation')]"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[concat(parameters('_artifactsLocation'), '/', parameters('templateFolder'), '/', parameters('simpleVMTemplateFile'), parameters('_artifactsLocationSasToken'))]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parametersLink": {
+          "uri": "[concat(parameters('_artifactsLocation'), '/', parameters('paramFolder'), '/', parameters('ADVMCreationTemplateParametersFile'), parameters('_artifactsLocationSasToken'))]",
+          "contentVersion": "1.0.0.0"
+        }
+      }
+    },
+    {
+      "name": "ADVMDiskCreation",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2016-09-01",
+      "dependsOn": [
+        "[concat('Microsoft.Resources/deployments/', 'ADVMCreation')]"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[concat(parameters('_artifactsLocation'), '/', parameters('templateFolder'), '/', parameters('unManagedDiskTemplateFile'), parameters('_artifactsLocationSasToken'))]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parametersLink": {
+          "uri": "[concat(parameters('_artifactsLocation'), '/', parameters('paramFolder'), '/', parameters('ADVMDiskCreationTemplateParametersFile'), parameters('_artifactsLocationSasToken'))]",
+          "contentVersion": "1.0.0.0"
+        }
+      }
+    },
+    {
+      "name": "ADAntiMalwareConfiguration",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2016-09-01",
+      "dependsOn": [
+        "[concat('Microsoft.Resources/deployments/', 'ADVMCreation')]",
+        "[concat('Microsoft.Resources/deployments/', 'ADVMDiskCreation')]",
+        "[concat('Microsoft.Resources/deployments/', 'ADIISConfiguration')]"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[concat(parameters('_artifactsLocation'), '/', parameters('templateFolder'), '/', parameters('ADVMAntiMalwareTemplateFile'), parameters('_artifactsLocationSasToken'))]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "virtualMachineName": {
+            "value": "testbenADVM"
+          }
+        }
+      }
+    },
+    {
+      "name": "CreateAppDBASs",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2016-09-01",
+      "dependsOn": [
+        "[concat('Microsoft.Resources/deployments/', 'NetworkCreation')]"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[concat(parameters('_artifactsLocation'), '/', parameters('templateFolder'), '/', parameters('AppDBVMsASTemplateFile'), parameters('_artifactsLocationSasToken'))]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parametersLink": {
+          "uri": "[concat(parameters('_artifactsLocation'), '/', parameters('paramFolder'), '/', parameters('AppDBVMsASTemplateParametersFile'), parameters('_artifactsLocationSasToken'))]",
+          "contentVersion": "1.0.0.0"
+        }
+      }
+    },
+    {
+      "name": "CreateAppDBVMs",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2016-09-01",
+      "dependsOn": [
+        "[concat('Microsoft.Resources/deployments/', 'ADVMStorage')]",
+        "[concat('Microsoft.Resources/deployments/', 'ADVMDiagStorage')]",
+        "[concat('Microsoft.Resources/deployments/', 'NetworkCreation')]",
+        "[concat('Microsoft.Resources/deployments/', 'CreateAppDBASs')]"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[concat(parameters('_artifactsLocation'), '/', parameters('templateFolder'), '/', parameters('AppDBVMsTemplateFile'), parameters('_artifactsLocationSasToken'))]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parametersLink": {
+          "uri": "[concat(parameters('_artifactsLocation'), '/', parameters('paramFolder'), '/', parameters('AppDBVMsTemplateParametersFile'), parameters('_artifactsLocationSasToken'))]",
+          "contentVersion": "1.0.0.0"
+        }
+      }
+    },
+    {
+      "name": "ADIISConfiguration",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2016-09-01",
+      "dependsOn": [
+        "[concat('Microsoft.Resources/deployments/', 'CreateAppDBVMs')]"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[concat(parameters('_artifactsLocation'), '/', parameters('templateFolder'), '/', parameters('AppVMIISTemplateFile'), parameters('_artifactsLocationSasToken'))]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parametersLink": {
+          "uri": "[concat(parameters('_artifactsLocation'), '/', parameters('paramFolder'), '/', parameters('AppVMIISTemplateParametersFile'), parameters('_artifactsLocationSasToken'))]",
+          "contentVersion": "1.0.0.0"
+        }
+      }
+    },
+    {
+      "name": "AppLBConfiguration",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2016-09-01",
+      "dependsOn": [
+        "[concat('Microsoft.Resources/deployments/', 'CreateAppDBVMs')]"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[concat(parameters('_artifactsLocation'), '/', parameters('templateFolder'), '/', parameters('AppLBTemplateFile'), parameters('_artifactsLocationSasToken'))]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parametersLink": {
+          "uri": "[concat(parameters('_artifactsLocation'), '/', parameters('paramFolder'), '/', parameters('AppLBTemplateParametersFile'), parameters('_artifactsLocationSasToken'))]",
+          "contentVersion": "1.0.0.0"
+        }
+      }
+    }
+  ],
+  "outputs": {
+  }
+}

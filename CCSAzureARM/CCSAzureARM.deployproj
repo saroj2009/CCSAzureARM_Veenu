@@ -1,0 +1,135 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|AnyCPU">
+      <Configuration>Debug</Configuration>
+      <Platform>AnyCPU</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|AnyCPU">
+      <Configuration>Release</Configuration>
+      <Platform>AnyCPU</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>e6323cc4-ed6f-453d-b7d1-db175fb2f8a8</ProjectGuid>
+  </PropertyGroup>
+  <PropertyGroup>
+    <TargetFrameworkIdentifier>Deployment</TargetFrameworkIdentifier>
+    <TargetFrameworkVersion>1.0</TargetFrameworkVersion>
+    <PrepareForBuildDependsOn>
+    </PrepareForBuildDependsOn>
+  </PropertyGroup>
+  <Import Condition=" Exists('Deployment.targets') " Project="Deployment.targets" />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" />
+  <!-- vertag<:>start tokens<:>maj.min -->
+  <Import Condition=" Exists('$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Deployment\1.1\DeploymentProject.targets') " Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Deployment\1.1\DeploymentProject.targets" />
+  <!-- vertag<:>end -->
+  <ItemGroup>
+    <Content Include="azuredeploy.json" />
+    <Content Include="azuredeploy.parameters.json" />
+    <None Include="bin\Debug\staging\CCSAzureARM\azuredeploy.json" />
+    <None Include="bin\Debug\staging\CCSAzureARM\azuredeploy.parameters.json" />
+    <None Include="bin\Debug\staging\CCSAzureARM\Deploy-AzureResourceGroup.ps1" />
+    <None Include="bin\Debug\staging\CCSAzureARM\DSC\CreateADPDC.zip" />
+    <None Include="bin\Debug\staging\CCSAzureARM\DSC\CreateDisk.zip" />
+    <None Include="bin\Debug\staging\CCSAzureARM\DSC\Install-IIS.zip" />
+    <None Include="bin\Debug\staging\CCSAzureARM\Parameters\azuredeploy\02-Storage\CreateADVMDiagStorage.parameters.json" />
+    <None Include="bin\Debug\staging\CCSAzureARM\Parameters\azuredeploy\02-Storage\CreateADVMStorage.parameters.json" />
+    <None Include="bin\Debug\staging\CCSAzureARM\Parameters\azuredeploy\03-Network\CreateAppPublicLB.parameters.json" />
+    <None Include="bin\Debug\staging\CCSAzureARM\Parameters\azuredeploy\03-Network\CreateNetworkandSubnet.parameters.json" />
+    <None Include="bin\Debug\staging\CCSAzureARM\Parameters\azuredeploy\04-Compute\CreateADUnManageDisks.parameters.json" />
+    <None Include="bin\Debug\staging\CCSAzureARM\Parameters\azuredeploy\04-Compute\CreateADVM.parameters.json" />
+    <None Include="bin\Debug\staging\CCSAzureARM\Parameters\azuredeploy\04-Compute\CreateAppDBAS.parameters.json" />
+    <None Include="bin\Debug\staging\CCSAzureARM\Parameters\azuredeploy\04-Compute\CreateAppDBVMs.parameters.json" />
+    <None Include="bin\Debug\staging\CCSAzureARM\Parameters\azuredeploy\04-Compute\CreateAppDBVMsWithAS.parameters.json" />
+    <None Include="bin\Debug\staging\CCSAzureARM\Parameters\azuredeploy\04-Compute\CreateAppDBVMsWithASManaged.parameters.json" />
+    <None Include="bin\Debug\staging\CCSAzureARM\Parameters\azuredeploy\04-Compute\CreateAppDBVMsWithManaged.parameters.json" />
+    <None Include="bin\Debug\staging\CCSAzureARM\Parameters\azuredeploy\05-Extensions\ConfigureADDS.parameters.json" />
+    <None Include="bin\Debug\staging\CCSAzureARM\Parameters\azuredeploy\05-Extensions\ConfigureADIIS.parameters.json" />
+    <None Include="bin\Debug\staging\CCSAzureARM\Parameters\azuredeploy\05-Extensions\ConfigureAppIISs.parameters.json" />
+    <None Include="bin\Debug\staging\CCSAzureARM\Parameters\azuredeploy\05-Extensions\CreateADDisk.parameters.json" />
+    <None Include="bin\Debug\staging\CCSAzureARM\Templates\02-Storage\01-CreateStorage.json" />
+    <None Include="bin\Debug\staging\CCSAzureARM\Templates\02-Storage\CreateStorage.json" />
+    <None Include="bin\Debug\staging\CCSAzureARM\Templates\03-Network\01-CreateNetwork.json" />
+    <None Include="bin\Debug\staging\CCSAzureARM\Templates\03-Network\01-CreatevAvailabilitySet.json" />
+    <None Include="bin\Debug\staging\CCSAzureARM\Templates\03-Network\02-CreatePrivateNic.json" />
+    <None Include="bin\Debug\staging\CCSAzureARM\Templates\03-Network\02-CreatePublicNic.json" />
+    <None Include="bin\Debug\staging\CCSAzureARM\Templates\03-Network\CreateAvailabilitySets.json" />
+    <None Include="bin\Debug\staging\CCSAzureARM\Templates\03-Network\CreateNetwork.json" />
+    <None Include="bin\Debug\staging\CCSAzureARM\Templates\03-Network\CreateNicPrivate.json" />
+    <None Include="bin\Debug\staging\CCSAzureARM\Templates\03-Network\CreateNicPublic.json" />
+    <None Include="bin\Debug\staging\CCSAzureARM\Templates\03-Network\CreatePublicIP.json" />
+    <None Include="bin\Debug\staging\CCSAzureARM\Templates\03-Network\CreatePublicLB.json" />
+    <None Include="bin\Debug\staging\CCSAzureARM\Templates\03-Network\CreatevAvailabilitySet.json" />
+    <None Include="bin\Debug\staging\CCSAzureARM\Templates\04-Compute\01-CreateVM-PIP.json" />
+    <None Include="bin\Debug\staging\CCSAzureARM\Templates\04-Compute\01-CreateVM.json" />
+    <None Include="bin\Debug\staging\CCSAzureARM\Templates\04-Compute\02-CreateVMs-old.json" />
+    <None Include="bin\Debug\staging\CCSAzureARM\Templates\04-Compute\02-CreateVMs.json" />
+    <None Include="bin\Debug\staging\CCSAzureARM\Templates\04-Compute\02-CreateVMsWithAS.json" />
+    <None Include="bin\Debug\staging\CCSAzureARM\Templates\04-Compute\31-CreateUnManageDisks.json" />
+    <None Include="bin\Debug\staging\CCSAzureARM\Templates\04-Compute\CreateUnManageDisks.json" />
+    <None Include="bin\Debug\staging\CCSAzureARM\Templates\04-Compute\CreateVM-PIP.json" />
+    <None Include="bin\Debug\staging\CCSAzureARM\Templates\04-Compute\CreateVM.json" />
+    <None Include="bin\Debug\staging\CCSAzureARM\Templates\04-Compute\CreateVMs-old.json" />
+    <None Include="bin\Debug\staging\CCSAzureARM\Templates\04-Compute\CreateVMs.json" />
+    <None Include="bin\Debug\staging\CCSAzureARM\Templates\04-Compute\CreateVMsManageDisk.json" />
+    <None Include="bin\Debug\staging\CCSAzureARM\Templates\04-Compute\CreateVMsWithAS.json" />
+    <None Include="bin\Debug\staging\CCSAzureARM\Templates\04-Compute\CreateVMsWithASManageDisk.json" />
+    <None Include="bin\Debug\staging\CCSAzureARM\Templates\05-Extensions\01-InstallADDS.json" />
+    <None Include="bin\Debug\staging\CCSAzureARM\Templates\05-Extensions\01-InstallAntiMalware.json" />
+    <None Include="bin\Debug\staging\CCSAzureARM\Templates\05-Extensions\02-CreateDisk.json" />
+    <None Include="bin\Debug\staging\CCSAzureARM\Templates\05-Extensions\02-Install-IIS.json" />
+    <None Include="bin\Debug\staging\CCSAzureARM\Templates\05-Extensions\02-Install-IISs.json" />
+    <None Include="bin\Debug\staging\CCSAzureARM\Templates\05-Extensions\CreateDisk.json" />
+    <None Include="bin\Debug\staging\CCSAzureARM\Templates\05-Extensions\Install-IIS.json" />
+    <None Include="bin\Debug\staging\CCSAzureARM\Templates\05-Extensions\Install-IISs.json" />
+    <None Include="bin\Debug\staging\CCSAzureARM\Templates\05-Extensions\InstallADDS.json" />
+    <None Include="bin\Debug\staging\CCSAzureARM\Templates\05-Extensions\InstallAntiMalware.json" />
+    <None Include="Deployment.targets">
+      <Visible>False</Visible>
+    </None>
+    <Content Include="Deploy-AzureResourceGroup.ps1" />
+    <Content Include="Parameters\azuredeploy\02-Storage\CreateADVMStorage.parameters.json" />
+    <Content Include="Parameters\azuredeploy\03-Network\CreateAppPublicLB.parameters.json" />
+    <Content Include="Parameters\azuredeploy\04-Compute\CreateAppDBAS.parameters.json" />
+    <Content Include="Parameters\azuredeploy\04-Compute\CreateAppDBVMsWithASManaged.parameters.json" />
+    <Content Include="Parameters\azuredeploy\04-Compute\CreateAppDBVMsWithManaged.parameters.json" />
+    <Content Include="Parameters\azuredeploy\04-Compute\CreateAppDBVMsWithAS.parameters.json" />
+    <Content Include="Parameters\azuredeploy\05-Extensions\ConfigureAppIISs.parameters.json" />
+    <Content Include="Parameters\azuredeploy\05-Extensions\CreateADDisk.parameters.json" />
+    <Content Include="Templates\02-Storage\CreateStorage.json" />
+    <Content Include="Parameters\azuredeploy\02-Storage\CreateADVMDiagStorage.parameters.json" />
+    <Content Include="Parameters\azuredeploy\03-Network\CreateNetworkandSubnet.parameters.json" />
+    <Content Include="Templates\03-Network\CreateAvailabilitySets.json" />
+    <Content Include="Templates\03-Network\CreatePublicIP.json" />
+    <Content Include="Templates\03-Network\CreatePublicLB.json" />
+    <Content Include="Templates\03-Network\CreateNicPublic.json" />
+    <Content Include="Templates\03-Network\CreateNicPrivate.json" />
+    <Content Include="Templates\03-Network\CreateNetwork.json" />
+    <Content Include="Parameters\azuredeploy\04-Compute\CreateADVM.parameters.json" />
+    <Content Include="Templates\04-Compute\CreateVM.json" />
+    <Content Include="Templates\04-Compute\CreateVMsWithASManageDisk.json" />
+    <Content Include="Templates\04-Compute\CreateVMsManageDisk.json" />
+    <Content Include="Templates\04-Compute\CreateVMsWithAS.json" />
+    <Content Include="Templates\04-Compute\CreateVMs.json" />
+    <Content Include="Templates\04-Compute\CreateVM-PIP.json" />
+    <Content Include="Parameters\azuredeploy\04-Compute\CreateADUnManageDisks.parameters.json" />
+    <Content Include="Templates\04-Compute\CreateUnManageDisks.json" />
+    <Content Include="DSC\CreateADPDC.zip" />
+    <None Include="DSC\Install-IIS.ps1" />
+    <Content Include="DSC\Install-IIS.zip" />
+    <None Include="Parameters\01-Sample\04-Compute\31-CreateUnManageDisks.parameters.json" />
+    <Content Include="Templates\05-Extensions\InstallAntiMalware.json" />
+    <Content Include="Templates\05-Extensions\Install-IISs.json" />
+    <Content Include="Templates\05-Extensions\Install-IIS.json" />
+    <Content Include="Templates\05-Extensions\CreateDisk.json" />
+    <Content Include="Templates\05-Extensions\InstallADDS.json" />
+    <Content Include="Parameters\azuredeploy\05-Extensions\ConfigureADDS.parameters.json" />
+    <Content Include="Parameters\azuredeploy\04-Compute\CreateAppDBVMs.parameters.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="obj\Debug\" />
+    <Folder Include="Templates\01-IAM\" />
+  </ItemGroup>
+  <Target Name="GetReferenceAssemblyPaths" />
+</Project>

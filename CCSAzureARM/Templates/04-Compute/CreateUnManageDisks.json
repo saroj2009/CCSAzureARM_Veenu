@@ -1,0 +1,48 @@
+﻿{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "virtualMachineName": {
+      "type": "string"
+    },
+    "storageAccountName": {
+      "type": "string"
+    },
+    "diskConfig": {
+      "type": "array"
+    }
+  },
+  "variables": {
+    "vhdStorageContainerName": "vhds"
+  },
+  "resources": [
+    {
+      "apiVersion": "2016-04-30-preview",
+      "type": "Microsoft.Compute/virtualMachines",
+      "name": "[parameters('virtualMachineName')]",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+      ],
+      "properties": {
+        "storageProfile": {
+          "copy": [
+            {
+              "name": "dataDisks",
+              "count": "[length(parameters('diskConfig'))]",
+              "input": {
+                "name": "[concat(parameters('virtualMachineName'),'-',parameters('diskConfig')[CopyIndex('dataDisks')].name)]",
+                "diskSizeGB": "[parameters('diskConfig')[CopyIndex('dataDisks')].diskSizeGB]",
+                "lun": "[parameters('diskConfig')[copyIndex('dataDisks')].lun]",
+                "createOption": "Empty",
+                "vhd": {
+                  "uri": "[concat('http://', parameters('storageAccountName'), '.blob.core.windows.net/', variables('vhdStorageContainerName'), '/', parameters('virtualMachineName'),'-',parameters('diskConfig')[CopyIndex('dataDisks')].name, '.vhd')]"
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+   ],
+  "outputs": { }
+}

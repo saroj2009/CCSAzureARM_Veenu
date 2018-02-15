@@ -1,0 +1,12 @@
+﻿{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "virtualMachineName": {
+      "value": "testbenADVM"
+    },
+    "sasToken": {
+      "value": "?sv=2014-02-14&sr=c&sig=GOfsCaJS6nFKr0lG1CM2g%2B384G5I7pOINUUfrM7J%2F4c%3D&st=2017-08-01T18%3A30%3A00Z&se=2017-08-30T18%3A30%3A00Z&sp=r"
+    }
+  }
+}

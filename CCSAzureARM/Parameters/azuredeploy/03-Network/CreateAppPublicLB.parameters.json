@@ -1,0 +1,30 @@
+﻿{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "lbName": {
+      "value": "testbenappLB"
+    },
+    "dnsNameforLBIP": {
+      "value": "testbenapplb"
+    },
+    "virtualNetworkName": {
+      "value": "bentestVNet"
+    },
+    "subnetName": {
+      "value": "AppSubnet"
+    },
+    "VMsConfig": {
+      "value": [
+        {
+          "virtualMachineName": "testbenAppVM1",
+          "isPublic": 0
+        },
+        {
+          "virtualMachineName": "testbenAppVM2",
+          "isPublic": 0
+        }
+      ]
+    }
+  }
+}
